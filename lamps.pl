@@ -6,6 +6,7 @@ use DateTime::Event::Sunrise;
 
 $lightstatus = 0;
 $|=1;
+$enabletimelapse = 0;
 
 # By default pin 11 is IN, swap it.
 print "Setting Pin 11 state to OUT\n\n";
@@ -29,9 +30,11 @@ while (1) {
 			print "TURNING ON LIGHTS!!\n";
 			`/usr/bin/gpio -1 write 11 1`;
 			sleep 5;
-		#	print "Smile for camera!!\n\n";
-		#	$snaptime = time;
-		#	`/usr/bin/raspistill -o /home/pi/timelapse/$snaptime.jpg`;
+			if ($enabletimelapse = 1) {
+				print "Smile for camera!!\n\n";
+				$snaptime = time;
+			`	/usr/bin/raspistill -o /home/pi/timelapse/$snaptime.jpg`;
+			}
 			$lightstatus = 1;
 		}
 		print "ON: Its: " . $nowtime->hms . "   Sundown is: " . $sun_morada->sunset_datetime($suntime)->hms .  "\n";
@@ -39,9 +42,11 @@ while (1) {
 
 	} else { 
 		if ($lightstatus == 1) {
-		#	print "Smile for camera!!\n\n";
-		#	$snaptime = time;
-		#	`/usr/bin/raspistill -o /home/pi/timelapse/$snaptime.jpg`;
+			if ($enabletimelapse = 1) {
+				print "Smile for camera!!\n\n";
+				$snaptime = time;
+				`/usr/bin/raspistill -o /home/pi/timelapse/$snaptime.jpg`;
+			}
 			sleep 5;
 			print "TURNING OFF LIGHTS!!!\n";
 			`/usr/bin/gpio -1 write 11 0`;
